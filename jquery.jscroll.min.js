@@ -10,7 +10,8 @@
  * http://www.gnu.org/licenses/gpl-2.0.html
  *
  * @author Philip Klauzinski
- * @version 2.3.5
+ * @modified Yong Chen
+ * @version 2.3.6
  * @requires jQuery v1.4.3+
  * @preserve
  */
