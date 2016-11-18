@@ -177,7 +177,7 @@
                             if (status === 'error') {
                                 return _destroy();
                             }
-                            _process(this);
+                            _process(this, data);
                         });
                     } else if (_options.dataType === 'json') {
                         if(_options.dataURL !== false) {
@@ -189,7 +189,7 @@
                                     // dataProcess(jQuery container, data)
                                     _options.dataProcess.call(this, last_jscroll, data);
                                 }
-                                _process(last_jscroll);
+                                _process(last_jscroll, data);
                             });
                         } else {
                             _debug('warn','jScroll: no dataURL present for JSON data type - destroying');
@@ -201,12 +201,12 @@
                         } else {
                             return _destroy();
                         }
-                        _process(last_jscroll);
+                        _process(last_jscroll, data);
                     }
                 });
             },
 
-            _process = function(el) {
+            _process = function(el, data) {
                 var $next = $(el).find(_options.nextSelector).first();
                 data.waiting = false;
                 data.nextHref = $next.attr('href') ? $.trim($next.attr('href') + ' ' + _options.contentSelector) : false;
