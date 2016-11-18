@@ -132,9 +132,11 @@
                     if (scrollingHeight <= windowHeight) {
                         _observe();
                     }
-                    _$scroll.unbind('.jscroll').bind('scroll.jscroll', function() {
-                        return _observe();
-                    });
+                    if($e.find(_options.nextSelector).length) {
+                        _$scroll.unbind('.jscroll').bind('scroll.jscroll', function() {
+                            return _observe();
+                        });
+                    }
                     if (_options.autoTriggerUntil > 0) {
                         _options.autoTriggerUntil--;
                     }
