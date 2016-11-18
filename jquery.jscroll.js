@@ -30,6 +30,9 @@
             nextSelector: 'a:last',
             contentSelector: '',
             pagingSelector: '',
+            dataType: 'html',
+            dataURL: false,
+            dataProcess: false,
             callback: false
         }
     };
@@ -167,21 +170,51 @@
                     });
 
                 return $e.animate({scrollTop: $inner.outerHeight()}, 0, function() {
-                    $inner.find('div.jscroll-added').last().load(data.nextHref, function(r, status) {
-                        if (status === 'error') {
+                    var last_jscroll = $inner.find('div.jscroll-added').last();
+                    if (_options.dataType === 'html') {
+                        last_jscroll.load(data.nextHref, function(r, status) {
+                            if (status === 'error') {
+                                return _destroy();
+                            }
+                            _process(this);
+                        });
+                    } else if (_options.dataType === 'json') {
+                        if(_options.dataURL !== false) {
+                            $.getJSON(_options.dataURL, function(data, status) {
+                                if (status === 'error' || !_options.dataProcess) {
+                                    return _destroy();
+                                }
+                                if(_options.dataProcess) {
+                                    // dataProcess(jQuery container, data)
+                                    _options.dataProcess.call(this, last_jscroll, data);
+                                }
+                                _process(last_jscroll);
+                            });
+                        } else {
+                            _debug('warn','jScroll: no dataURL present for JSON data type - destroying');
                             return _destroy();
                         }
-                        var $next = $(this).find(_options.nextSelector).first();
-                        data.waiting = false;
-                        data.nextHref = $next.attr('href') ? $.trim($next.attr('href') + ' ' + _options.contentSelector) : false;
-                        $('.jscroll-next-parent', $e).remove(); // Remove the previous next link now that we have a new one
-                        _checkNextHref();
-                        if (_options.callback) {
-                            _options.callback.call(this);
+                    } else {
+                        if (_options.dataProcess) {
+                            _options.dataProcess.call(this, last_jscroll);
+                        } else {
+                            return _destroy();
                         }
-                        _debug('dir', data);
-                    });
+                        _process(last_jscroll);
+                    }
                 });
+            },
+
+            _process = function(el) {
+                var $next = $(el).find(_options.nextSelector).first();
+                data.waiting = false;
+                data.nextHref = $next.attr('href') ? $.trim($next.attr('href') + ' ' + _options.contentSelector) : false;
+                $('.jscroll-next-parent', $e).remove(); // Remove the previous next link now that we have a new one
+                var has_next = _checkNextHref();
+                if (_options.callback) {
+                    _options.callback.call(el, has_next);
+                }
+                _debug('dir', data);
             },
 
             // Safe console debug - http://klauzinski.com/javascript/safe-firebug-console-in-javascript

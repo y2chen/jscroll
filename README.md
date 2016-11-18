@@ -50,6 +50,9 @@ $('.jscroll').jscroll({
 * `nextSelector ('a:last')` - The selector to use for finding the link which contains the href pointing to the next set of content. If this selector is not found, or if it does not contain a href attribute, jScroll will self-destroy and unbind from the element upon which it was called.
 * `contentSelector ('')` - A convenience selector for loading only part of the content in the response for the next set of content. This selector will be ignored if left blank and will apply the entire response to the DOM.
 * `pagingSelector ('')` - Optionally define a selector for your paging controls so that they will be hidden, instead of just hiding the next page link.
+* `dataType` - Optionally define if the fetched content is HTML (html), JSON (json), or some other format to be inserted via custom dataProcess function
+* `dataURL` - Optionally define the path to a JSON file to be fetched
+* `dataProcess ('')` - Optionally define a function to process the data returned by JSON call, or through some other custom method
 * `callback (false)` - Optionally define a callback function to be called after a set of content has been loaded.
 
 For more information on the `contentSelector` option and how it loads a response fragment, see the [jQuery documentation for the .load() method](http://api.jquery.com/load/).
