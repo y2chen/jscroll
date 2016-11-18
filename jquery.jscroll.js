@@ -79,8 +79,8 @@
 
             // Remove the jscroll behavior and data from an element
             _destroy = function() {
-                return _$scroll.unbind('.jscroll')
-                    .removeData('jscroll')
+                _$scroll.unbind('.jscroll')
+                return $e.removeData('jscroll')
                     .find('.jscroll-inner').children().unwrap()
                     .filter('.jscroll-added').children().unwrap();
             },
